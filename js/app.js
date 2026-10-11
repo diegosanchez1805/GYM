@@ -613,17 +613,30 @@ const App = (() => {
   };
 
   const updateExpirationDateByPlan = () => {
-    const plan = document.getElementById('memberPlan').value;
+    const planSelect = document.getElementById('memberPlan');
+    if (!planSelect) return;
+    const plan = planSelect.value;
+    const planText = planSelect.options[planSelect.selectedIndex]?.text || '';
     const startDate = document.getElementById('memberStartDate').value || DataManager.formatDateISO(new Date());
     const expInput = document.getElementById('memberExpirationDate');
+    if (!expInput) return;
 
     let daysToAdd = 30;
-    if (plan === 'Pase por Día') daysToAdd = 1;
-    else if (plan === 'Mensual') daysToAdd = 30;
-    else if (plan === 'Trimestral') daysToAdd = 90;
-    else if (plan === 'Semestral') daysToAdd = 180;
-    else if (plan === 'Anual') daysToAdd = 365;
-    else if (plan === 'Personalizado') return;
+    if (plan === 'Pase por Día' || planText.includes('1 día') || planText.includes('Pase')) {
+      daysToAdd = 1;
+    } else if (plan === 'Semanal' || planText.includes('7 días') || planText.includes('Semanal')) {
+      daysToAdd = 7;
+    } else if (plan === 'Mensual' || planText.includes('30 días') || planText.includes('Mensual')) {
+      daysToAdd = 30;
+    } else if (plan === 'Trimestral' || planText.includes('90 días') || planText.includes('Trimestral')) {
+      daysToAdd = 90;
+    } else if (plan === 'Semestral' || planText.includes('180 días') || planText.includes('Semestral')) {
+      daysToAdd = 180;
+    } else if (plan === 'Anual' || planText.includes('365 días') || planText.includes('Anual')) {
+      daysToAdd = 365;
+    } else if (plan === 'Personalizado') {
+      return;
+    }
 
     expInput.value = DataManager.addDaysToDate(startDate, daysToAdd);
   };
@@ -658,7 +671,17 @@ const App = (() => {
     document.getElementById('memberCode').value = member.code || '';
     document.getElementById('memberPhone').value = member.phone || '';
     document.getElementById('memberEmail').value = member.email || '';
-    document.getElementById('memberPlan').value = member.plan || 'Mensual';
+    
+    const planSelect = document.getElementById('memberPlan');
+    const memberPlanVal = member.plan || 'Mensual';
+    if (!Array.from(planSelect.options).some(opt => opt.value === memberPlanVal)) {
+      const opt = document.createElement('option');
+      opt.value = memberPlanVal;
+      opt.textContent = memberPlanVal;
+      planSelect.appendChild(opt);
+    }
+    planSelect.value = memberPlanVal;
+
     document.getElementById('memberAvatar').value = member.avatar || '💪';
     document.getElementById('memberStartDate').value = member.startDate || DataManager.formatDateISO(new Date());
     document.getElementById('memberExpirationDate').value = member.expirationDate || '';

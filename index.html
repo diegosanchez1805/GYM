@@ -275,8 +275,8 @@
               <label for="memberPlan">Plan de Membresía *</label>
               <select id="memberPlan" required>
                 <option value="Pase por Día">Pase por Día (1 día)</option>
-                <option value="Mensual">Semanal (7 días)</option>
-                <option value="Trimestral">Mensual (30 días)</option>
+                <option value="Semanal">Semanal (7 días)</option>
+                <option value="Mensual">Mensual (30 días)</option>
                 <option value="Semestral">Semestral (180 días)</option>
                 <option value="Anual">Anual (365 días)</option>
               </select>
@@ -342,8 +342,8 @@
         <div class="form-group">
           <label>Extender tiempo de membresía:</label>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1rem;">
+            <button type="button" class="btn btn-dark" onclick="App.applyRenewDays(7)">+ 1 Semana (7d)</button>
             <button type="button" class="btn btn-dark" onclick="App.applyRenewDays(30)">+ 1 Mes (30d)</button>
-            <button type="button" class="btn btn-dark" onclick="App.applyRenewDays(90)">+ 3 Meses (90d)</button>
             <button type="button" class="btn btn-dark" onclick="App.applyRenewDays(180)">+ 6 Meses (180d)</button>
             <button type="button" class="btn btn-yellow" onclick="App.applyRenewDays(365)">+ 1 Año (365d)</button>
           </div>
