@@ -28,6 +28,53 @@ const DataManager = (() => {
     return formatDateISO(date);
   };
 
+  // Sumar meses exactos de calendario (Ej. 10 de octubre -> 10 de noviembre)
+  // Con ajuste al último día del mes si el día no existe (Ej. 31 de enero -> 28 de febrero)
+  const addMonthsToDate = (startDateStr, months) => {
+    if (!startDateStr) return '';
+    const parts = startDateStr.split('-');
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // 0-indexed
+    const day = parseInt(parts[2], 10);
+
+    const numMonths = parseInt(months, 10);
+    const totalMonths = month + numMonths;
+    const targetYear = year + Math.floor(totalMonths / 12);
+    const targetMonth = ((totalMonths % 12) + 12) % 12;
+
+    // Obtener días disponibles en el mes destino
+    const daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+    const finalDay = Math.min(day, daysInTargetMonth);
+
+    const mm = String(targetMonth + 1).padStart(2, '0');
+    const dd = String(finalDay).padStart(2, '0');
+    return targetYear + '-' + mm + '-' + dd;
+  };
+
+  // Sumar años exactos de calendario
+  const addYearsToDate = (startDateStr, years) => {
+    return addMonthsToDate(startDateStr, parseInt(years, 10) * 12);
+  };
+
+  // Calcular vencimiento exacto según el plan
+  const calculatePlanExpiration = (startDateStr, planName) => {
+    const plan = (planName || '').trim();
+    if (plan.includes('Pase') || plan.includes('1 día')) {
+      return addDaysToDate(startDateStr, 1);
+    } else if (plan.includes('Semanal') || plan.includes('7 días')) {
+      return addDaysToDate(startDateStr, 7);
+    } else if (plan.includes('Mensual') || plan.includes('Mes')) {
+      return addMonthsToDate(startDateStr, 1);
+    } else if (plan.includes('Trimestral') || plan.includes('90')) {
+      return addMonthsToDate(startDateStr, 3);
+    } else if (plan.includes('Semestral') || plan.includes('180') || plan.includes('6 Mes')) {
+      return addMonthsToDate(startDateStr, 6);
+    } else if (plan.includes('Anual') || plan.includes('365') || plan.includes('Año')) {
+      return addYearsToDate(startDateStr, 1);
+    }
+    return addMonthsToDate(startDateStr, 1);
+  };
+
   // Calcular días restantes respecto a hoy
   const calculateDaysRemaining = (expirationDateStr) => {
     const today = new Date();
@@ -185,6 +232,9 @@ const DataManager = (() => {
   return {
     formatDateISO,
     addDaysToDate,
+    addMonthsToDate,
+    addYearsToDate,
+    calculatePlanExpiration,
     calculateDaysRemaining,
     getMembershipStatus,
 
@@ -230,8 +280,8 @@ const DataManager = (() => {
       return true;
     },
 
-    // Renovar membresía
-    renewMember: (id, daysToAdd, fromToday = false) => {
+    // Renovar membresía (soporta unidad: 'month', 'year', 'week', 'day' o días numéricos)
+    renewMember: (id, amount, unit = 'day', fromToday = false) => {
       const members = loadMembers();
       const member = members.find(m => m.id === id);
       if (!member) return null;
@@ -245,7 +295,28 @@ const DataManager = (() => {
         baseDateStr = todayStr;
       }
 
-      member.expirationDate = addDaysToDate(baseDateStr, daysToAdd);
+      if (unit === 'month') {
+        member.expirationDate = addMonthsToDate(baseDateStr, amount);
+      } else if (unit === 'year') {
+        member.expirationDate = addYearsToDate(baseDateStr, amount);
+      } else if (unit === 'week') {
+        member.expirationDate = addDaysToDate(baseDateStr, amount * 7);
+      } else {
+        // Conversión inteligente de días tradicionales a meses calendario exactos
+        const num = parseInt(amount, 10);
+        if (num === 30) {
+          member.expirationDate = addMonthsToDate(baseDateStr, 1);
+        } else if (num === 90) {
+          member.expirationDate = addMonthsToDate(baseDateStr, 3);
+        } else if (num === 180) {
+          member.expirationDate = addMonthsToDate(baseDateStr, 6);
+        } else if (num === 365) {
+          member.expirationDate = addYearsToDate(baseDateStr, 1);
+        } else {
+          member.expirationDate = addDaysToDate(baseDateStr, num);
+        }
+      }
+
       saveAllMembers(members);
       return member;
     },

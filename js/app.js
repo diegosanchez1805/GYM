@@ -621,24 +621,9 @@ const App = (() => {
     const expInput = document.getElementById('memberExpirationDate');
     if (!expInput) return;
 
-    let daysToAdd = 30;
-    if (plan === 'Pase por Día' || planText.includes('1 día') || planText.includes('Pase')) {
-      daysToAdd = 1;
-    } else if (plan === 'Semanal' || planText.includes('7 días') || planText.includes('Semanal')) {
-      daysToAdd = 7;
-    } else if (plan === 'Mensual' || planText.includes('30 días') || planText.includes('Mensual')) {
-      daysToAdd = 30;
-    } else if (plan === 'Trimestral' || planText.includes('90 días') || planText.includes('Trimestral')) {
-      daysToAdd = 90;
-    } else if (plan === 'Semestral' || planText.includes('180 días') || planText.includes('Semestral')) {
-      daysToAdd = 180;
-    } else if (plan === 'Anual' || planText.includes('365 días') || planText.includes('Anual')) {
-      daysToAdd = 365;
-    } else if (plan === 'Personalizado') {
-      return;
-    }
+    if (plan === 'Personalizado') return;
 
-    expInput.value = DataManager.addDaysToDate(startDate, daysToAdd);
+    expInput.value = DataManager.calculatePlanExpiration(startDate, plan || planText);
   };
 
   const openNewMemberModal = (prefilledCode = '') => {
@@ -760,26 +745,35 @@ const App = (() => {
       Vence: <strong>${member.expirationDate}</strong> (${statusInfo.displayText})
     `;
 
-    // Fecha sugerida por defecto: +30 días
+    // Fecha sugerida por defecto: +1 mes calendario exacto
     const todayStr = DataManager.formatDateISO(new Date());
     const baseDate = statusInfo.status === 'expired' ? todayStr : member.expirationDate;
-    document.getElementById('renewCustomDate').value = DataManager.addDaysToDate(baseDate, 30);
+    document.getElementById('renewCustomDate').value = DataManager.addMonthsToDate(baseDate, 1);
 
     openModal('modalRenew');
   };
 
-  const applyRenewDays = (days) => {
+  const applyRenewUnit = (unit, amount) => {
     const memberId = document.getElementById('renewMemberId').value;
     if (!memberId) return;
 
     // Si la membresía ya expiró, renueva a partir de hoy. Si no, extiende la fecha actual.
-    DataManager.renewMember(memberId, days, false);
+    DataManager.renewMember(memberId, amount, unit, false);
     refreshStats();
     renderMembersTable();
     closeModal('modalRenew');
 
     // Notificación sonora suave
     SoundManager.playSuccess();
+  };
+
+  const applyRenewDays = (days) => {
+    if (days === 7) applyRenewUnit('week', 1);
+    else if (days === 30) applyRenewUnit('month', 1);
+    else if (days === 90) applyRenewUnit('month', 3);
+    else if (days === 180) applyRenewUnit('month', 6);
+    else if (days === 365) applyRenewUnit('year', 1);
+    else applyRenewUnit('day', days);
   };
 
   // ==================== CARNET DIGITAL ====================
@@ -895,6 +889,7 @@ const App = (() => {
     openRenewModal,
     openCarnetModal,
     applyRenewDays,
+    applyRenewUnit,
     deleteMember
   };
 })();
