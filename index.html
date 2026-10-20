@@ -91,7 +91,7 @@
         <div class="checkin-kiosk">
           <div class="kiosk-header">
             <h2>Punto de Reconocimiento</h2>
-            <p>Ingresa el código del socio o escanea su credencial</p>
+            <p>Ingresa el código del miembro o escanea su credencial</p>
           </div>
 
           <form id="formCheckin" onsubmit="return false;">
@@ -109,14 +109,6 @@
               VERIFICAR ACCESO (ENTER)
             </button>
           </form>
-
-          <!-- Atajos rápidos para probar -->
-          <div style="margin-top: 1.25rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <span style="font-size: 0.78rem; color: var(--text-muted); width: 100%;">Códigos de prueba rápida:</span>
-            <button class="btn btn-dark btn-sm" onclick="App.testCode('0001')">0001 (Activo)</button>
-            <button class="btn btn-dark btn-sm" onclick="App.testCode('0002')">0002 (Por Vencer 3d)</button>
-            <button class="btn btn-dark btn-sm" onclick="App.testCode('0004')">0004 (Vencido)</button>
-          </div>
 
           <!-- Teclado en pantalla (kiosco táctil) -->
           <div class="keypad-grid">
