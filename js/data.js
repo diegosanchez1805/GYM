@@ -114,6 +114,16 @@ const DataManager = (() => {
     }
   };
 
+  // Obtener iniciales profesionales para avatar (limpio, sin emojis)
+  const getInitials = (name) => {
+    if (!name) return 'TH';
+    const words = name.trim().split(/\s+/).filter(Boolean);
+    if (words.length >= 2) {
+      return (words[0][0] + words[1][0]).toUpperCase();
+    }
+    return words[0].slice(0, 2).toUpperCase();
+  };
+
   // Generar datos demo dinámicos relativos a la fecha de ejecución
   const generateInitialDemoData = () => {
     const today = new Date();
@@ -128,7 +138,7 @@ const DataManager = (() => {
         plan: 'Mensual',
         startDate: formatDateISO(new Date(today.getTime() - 15 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() + 15 * 24 * 60 * 60 * 1000)),
-        avatar: '💪',
+        avatar: 'CM',
         notes: 'Entrenamiento de fuerza / hipertrofia'
       },
       {
@@ -140,7 +150,7 @@ const DataManager = (() => {
         plan: 'Mensual',
         startDate: formatDateISO(new Date(today.getTime() - 27 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000)), // Por vencer en 3 días!
-        avatar: '🏃‍♀️',
+        avatar: 'VG',
         notes: 'Crossfit y cardio matutino'
       },
       {
@@ -152,7 +162,7 @@ const DataManager = (() => {
         plan: 'Trimestral',
         startDate: formatDateISO(new Date(today.getTime() - 89 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() + 1 * 24 * 60 * 60 * 1000)), // ¡Por vencer mañana!
-        avatar: '🥊',
+        avatar: 'RS',
         notes: 'Clases de boxeo por la tarde'
       },
       {
@@ -164,7 +174,7 @@ const DataManager = (() => {
         plan: 'Mensual',
         startDate: formatDateISO(new Date(today.getTime() - 35 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000)), // ¡Vencido hace 5 días!
-        avatar: '🧘‍♀️',
+        avatar: 'LF',
         notes: 'Pendiente renovar plan semestral'
       },
       {
@@ -176,7 +186,7 @@ const DataManager = (() => {
         plan: 'Anual VIP',
         startDate: formatDateISO(new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() + 305 * 24 * 60 * 60 * 1000)),
-        avatar: '🏋️‍♂️',
+        avatar: 'AR',
         notes: 'Socio VIP - Acceso a todas las áreas'
       },
       {
@@ -188,7 +198,7 @@ const DataManager = (() => {
         plan: 'Mensual',
         startDate: formatDateISO(new Date(today.getTime() - 25 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000)), // Por vencer en 5 días
-        avatar: '🚴‍♀️',
+        avatar: 'MC',
         notes: 'Spinning y nutrición'
       },
       {
@@ -200,7 +210,7 @@ const DataManager = (() => {
         plan: 'Pase por Día',
         startDate: formatDateISO(new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000)),
         expirationDate: formatDateISO(new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000)), // Vencido ayer
-        avatar: '⚡',
+        avatar: 'FM',
         notes: 'Pase de prueba'
       }
     ];
@@ -211,7 +221,16 @@ const DataManager = (() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(OLD_STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          // Reemplazar avatares con emojis residuales por iniciales limpias
+          return parsed.map(m => ({
+            ...m,
+            avatar: (!m.avatar || /[\uD83C-\uDBFF\uDC00-\uDFFF\u2600-\u27BF]/.test(m.avatar))
+              ? getInitials(m.name)
+              : m.avatar
+          }));
+        }
       }
     } catch (e) {
       console.error('Error al leer de localStorage:', e);
@@ -237,6 +256,7 @@ const DataManager = (() => {
     calculatePlanExpiration,
     calculateDaysRemaining,
     getMembershipStatus,
+    getInitials,
 
     // Obtener todos los miembros
     getMembers: () => {

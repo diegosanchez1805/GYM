@@ -23,10 +23,10 @@
 
       <div class="header-actions">
         <button id="btnSoundToggle" class="btn btn-dark btn-icon" title="Silenciar / Activar Sonido">
-          <span id="soundIcon">🔊</span>
+          <span id="soundIcon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
         </button>
         <button id="btnOpenBackup" class="btn btn-dark btn-sm" title="Respaldar o Restaurar Datos">
-          💾 Respaldo
+          Respaldo
         </button>
         <button id="btnNewMemberHeader" class="btn btn-yellow">
           <span>+</span> Nuevo Miembro
@@ -42,7 +42,7 @@
           <h3>Total Miembros</h3>
           <div class="stat-number" id="statTotal">0</div>
         </div>
-        <div class="stat-icon">👥</div>
+        <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
       </div>
 
       <!-- Activos -->
@@ -51,7 +51,7 @@
           <h3>Membresías Activas</h3>
           <div class="stat-number" id="statActive">0</div>
         </div>
-        <div class="stat-icon" style="color: var(--status-active);">🟢</div>
+        <div class="stat-icon" style="color: var(--status-active);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
 
       <!-- Por Vencer (Próximos 7 días) -->
@@ -60,7 +60,7 @@
           <h3>Por Vencer (7 días)</h3>
           <div class="stat-number" id="statWarning">0</div>
         </div>
-        <div class="stat-icon" style="color: var(--yellow-primary);">⚠️</div>
+        <div class="stat-icon" style="color: var(--yellow-primary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       </div>
 
       <!-- Vencidos -->
@@ -69,17 +69,17 @@
           <h3>Vencidos</h3>
           <div class="stat-number" id="statExpired">0</div>
         </div>
-        <div class="stat-icon" style="color: var(--status-expired);">⛔</div>
+        <div class="stat-icon" style="color: var(--status-expired);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
       </div>
     </section>
 
     <!-- ==================== PESTAÑAS DE NAVEGACIÓN ==================== -->
     <nav class="nav-tabs">
       <button class="tab-btn active" data-tab="tab-checkin">
-        <span>🎯</span> Reconocimiento y Check-in
+        Reconocimiento y Check-in
       </button>
       <button class="tab-btn" data-tab="tab-members">
-        <span>📋</span> Lista de Miembros & Filtros
+        Lista de Miembros & Filtros
       </button>
     </nav>
 
@@ -106,7 +106,7 @@
               >
             </div>
             <button type="submit" id="btnVerifyCode" class="btn btn-yellow" style="width: 100%; padding: 0.95rem; font-size: 1.05rem;">
-              ⚡ VERIFICAR ACCESO (ENTER)
+              VERIFICAR ACCESO (ENTER)
             </button>
           </form>
 
@@ -138,7 +138,7 @@
         <!-- Columna Derecha: Resultado del Reconocimiento -->
         <div id="checkinResultCard" class="result-card">
           <div class="result-placeholder">
-            <div class="icon-kiosk-empty">🛡️</div>
+            <div class="icon-kiosk-empty"><svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="3"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg></div>
             <h3>Esperando Lectura de Código</h3>
             <p>Ingresa un código para identificar al miembro y validar su membresía.</p>
           </div>
@@ -149,7 +149,7 @@
       <!-- Historial de Accesos Recientes -->
       <section class="recent-logs">
         <div class="recent-logs-header">
-          <h3>⏱️ Registro Reciente de Accesos</h3>
+          <h3>Registro Reciente de Accesos</h3>
           <button id="btnClearLogs" class="btn btn-dark btn-sm">Limpiar Registro</button>
         </div>
         <div id="logsList" class="logs-list">
@@ -166,7 +166,7 @@
         <div class="toolbar">
           <!-- Buscador -->
           <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
             <input 
               type="text" 
               id="inputSearch" 
@@ -180,22 +180,22 @@
               Todos <span class="pill-count" id="countAll">0</span>
             </button>
             <button class="filter-pill pill-expiring" data-status="warning" title="Miembros cuya membresía está por terminar en 7 días">
-              ⚠️ Por Vencer (7 días) <span class="pill-count" id="countWarning">0</span>
+              Por Vencer (7 días) <span class="pill-count" id="countWarning">0</span>
             </button>
             <button class="filter-pill" data-status="active">
-              🟢 Activos <span class="pill-count" id="countActive">0</span>
+              Activos <span class="pill-count" id="countActive">0</span>
             </button>
             <button class="filter-pill" data-status="expired">
-              ⛔ Vencidos <span class="pill-count" id="countExpired">0</span>
+              Vencidos <span class="pill-count" id="countExpired">0</span>
             </button>
           </div>
 
           <!-- Ordenamiento -->
           <div style="display: flex; gap: 0.5rem; align-items: center;">
             <select id="selectSort" class="btn btn-dark btn-sm" style="padding: 0.6rem 0.8rem; background: var(--bg-secondary); outline: none;">
-              <option value="expiring-asc">⚡ Próximos a vencer primero</option>
-              <option value="name-asc">🔤 Nombre (A - Z)</option>
-              <option value="recent">📅 Más recientes</option>
+              <option value="expiring-asc">Próximos a vencer primero</option>
+              <option value="name-asc">Nombre (A - Z)</option>
+              <option value="recent">Más recientes</option>
             </select>
             <button id="btnNewMemberTable" class="btn btn-yellow btn-sm">
               + Nuevo Socio
@@ -224,7 +224,7 @@
 
         <!-- Estado vacío si no hay coincidencias -->
         <div id="emptyMembersMessage" style="display: none; text-align: center; padding: 3rem; color: var(--text-muted);">
-          <div style="font-size: 3rem; margin-bottom: 0.5rem;">🔍</div>
+          <div style="margin-bottom: 0.5rem; color: var(--text-muted);"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
           <h3>No se encontraron miembros con el filtro actual</h3>
           <p style="font-size: 0.85rem; margin-top: 0.25rem;">Intenta cambiar el término de búsqueda o selecciona "Todos".</p>
         </div>
@@ -254,7 +254,7 @@
               <label for="memberCode">Código de Identificación *</label>
               <div style="display: flex; gap: 0.4rem;">
                 <input type="text" id="memberCode" required placeholder="Ej. 1045" style="text-transform: uppercase;">
-                <button type="button" id="btnGenCode" class="btn btn-dark btn-sm" title="Generar código aleatorio">🎲</button>
+                <button type="button" id="btnGenCode" class="btn btn-dark btn-sm" title="Generar código aleatorio">Aleatorio</button>
               </div>
             </div>
           </div>
@@ -270,31 +270,15 @@
             </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="memberPlan">Plan de Membresía *</label>
-              <select id="memberPlan" required>
-                <option value="Pase por Día">Pase por Día (1 día)</option>
-                <option value="Semanal">Semanal (7 días)</option>
-                <option value="Mensual">Mensual (1 mes exacto)</option>
-                <option value="Semestral">Semestral (6 meses)</option>
-                <option value="Anual">Anual (1 año)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="memberAvatar">Avatar / Icono</label>
-              <select id="memberAvatar">
-                <option value="💪">💪 Fuerza</option>
-                <option value="🏋️‍♂️">🏋️‍♂️ Pesas Masc.</option>
-                <option value="🏋️‍♀️">🏋️‍♀️ Pesas Fem.</option>
-                <option value="🥊">🥊 Boxeo</option>
-                <option value="🏃‍♂️">🏃‍♂️ Cardio Masc.</option>
-                <option value="🏃‍♀️">🏃‍♀️ Cardio Fem.</option>
-                <option value="🧘‍♀️">🧘‍♀️ Yoga / Stretch</option>
-                <option value="🚴‍♀️">🚴‍♀️ Spinning</option>
-                <option value="⚡">⚡ Thor VIP</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="memberPlan">Plan de Membresía *</label>
+            <select id="memberPlan" required>
+              <option value="Pase por Día">Pase por Día (1 día)</option>
+              <option value="Semanal">Semanal (7 días)</option>
+              <option value="Mensual">Mensual (1 mes exacto)</option>
+              <option value="Semestral">Semestral (6 meses)</option>
+              <option value="Anual">Anual (1 año)</option>
+            </select>
           </div>
 
           <div class="form-row">
@@ -326,13 +310,13 @@
   <div id="modalRenew" class="modal-overlay">
     <div class="modal-content" style="max-width: 460px;">
       <div class="modal-header">
-        <h2>⚡ Renovar Membresía</h2>
+        <h2>Renovar Membresía</h2>
         <button class="modal-close-btn" data-close="modalRenew">&times;</button>
       </div>
       <div class="modal-body">
         <input type="hidden" id="renewMemberId">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-          <div id="renewAvatar" class="member-table-avatar" style="width: 50px; height: 50px; font-size: 1.5rem;">💪</div>
+          <div id="renewAvatar" class="member-table-avatar" style="width: 50px; height: 50px; font-size: 1.2rem;">TH</div>
           <div>
             <div id="renewName" style="font-weight: 800; font-size: 1.1rem; color: var(--text-main);">Nombre Socio</div>
             <div id="renewCurrentExp" style="font-size: 0.85rem; color: var(--yellow-primary);">Vence: --</div>
@@ -365,7 +349,7 @@
   <div id="modalCarnet" class="modal-overlay">
     <div class="modal-content" style="max-width: 440px;">
       <div class="modal-header">
-        <h2>🪪 Credencial Digital</h2>
+        <h2>Credencial Digital</h2>
         <button class="modal-close-btn" data-close="modalCarnet">&times;</button>
       </div>
       <div class="modal-body" style="padding-top: 0.5rem;">
@@ -373,12 +357,12 @@
         <div class="carnet-wrapper">
           <div class="carnet-card" id="printableCarnet">
             <div class="carnet-header">
-              <span class="carnet-gym">⚡ THOR GYM</span>
+              <span class="carnet-gym">THOR GYM</span>
               <span id="carnetStatusBadge" class="badge-status active">ACTIVO</span>
             </div>
 
             <div class="carnet-body">
-              <div id="carnetAvatar" class="carnet-avatar">💪</div>
+              <div id="carnetAvatar" class="carnet-avatar">TH</div>
               <div>
                 <div id="carnetName" class="carnet-name">Carlos Mendoza</div>
                 <div id="carnetPlan" class="carnet-plan">PLAN MENSUAL</div>
@@ -401,7 +385,7 @@
         </div>
 
         <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem;">
-          <button class="btn btn-dark" onclick="window.print()">🖨️ Imprimir Credencial</button>
+          <button class="btn btn-dark" onclick="window.print()">Imprimir Credencial</button>
           <button class="btn btn-yellow" data-close="modalCarnet">Aceptar</button>
         </div>
       </div>
@@ -412,7 +396,7 @@
   <div id="modalBackup" class="modal-overlay">
     <div class="modal-content" style="max-width: 500px;">
       <div class="modal-header">
-        <h2>💾 Respaldo y Gestión de Datos</h2>
+        <h2>Respaldo y Gestión de Datos</h2>
         <button class="modal-close-btn" data-close="modalBackup">&times;</button>
       </div>
       <div class="modal-body">
@@ -422,18 +406,18 @@
 
         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
           <button id="btnExportJSON" class="btn btn-yellow" style="width: 100%;">
-            ⬇️ Descargar Copia de Seguridad (.json)
+            Descargar Copia de Seguridad (.json)
           </button>
 
           <label class="btn btn-dark" style="width: 100%; text-align: center; cursor: pointer;">
-            ⬆️ Restaurar Copia de Seguridad
+            Restaurar Copia de Seguridad (.json)
             <input type="file" id="fileImportJSON" accept=".json" style="display: none;">
           </label>
 
           <hr style="border-color: var(--border-color); margin: 0.5rem 0;">
 
           <button id="btnResetDemo" class="btn btn-danger" style="width: 100%;">
-            🔄 Restablecer a Datos de Prueba Demo
+            Restablecer a Datos de Prueba
           </button>
         </div>
       </div>

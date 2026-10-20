@@ -82,7 +82,9 @@ const App = (() => {
 
     btn.addEventListener('click', () => {
       const isMuted = SoundManager.toggleMute();
-      icon.textContent = isMuted ? '🔇' : '🔊';
+      icon.innerHTML = isMuted 
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>'
+        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
       btn.title = isMuted ? 'Sonido Desactivado' : 'Sonido Activado';
     });
   };
@@ -203,7 +205,7 @@ const App = (() => {
     card.className = 'result-card status-expired';
     card.innerHTML = `
       <div class="result-badge badge-expired">
-        ⛔ CÓDIGO NO ENCONTRADO
+        CÓDIGO NO ENCONTRADO
       </div>
       <div class="result-avatar" style="border-color: var(--status-expired); color: var(--status-expired);">?</div>
       <h2 class="result-name">Socio No Registrado</h2>
@@ -220,11 +222,12 @@ const App = (() => {
   const renderActiveResult = (member, statusInfo) => {
     const card = document.getElementById('checkinResultCard');
     card.className = 'result-card status-active';
+    const avatar = member.avatar || DataManager.getInitials(member.name);
     card.innerHTML = `
       <div class="result-badge badge-active">
-        ✅ ACCESO AUTORIZADO
+        ACCESO AUTORIZADO
       </div>
-      <div class="result-avatar">${member.avatar || '💪'}</div>
+      <div class="result-avatar">${escapeHTML(avatar)}</div>
       <h2 class="result-name">${escapeHTML(member.name)}</h2>
       <div class="result-code">ID: ${escapeHTML(member.code)}</div>
       
@@ -248,11 +251,12 @@ const App = (() => {
   const renderWarningResult = (member, statusInfo) => {
     const card = document.getElementById('checkinResultCard');
     card.className = 'result-card status-warning';
+    const avatar = member.avatar || DataManager.getInitials(member.name);
     card.innerHTML = `
       <div class="result-badge badge-warning">
-        ⚠️ ATENCIÓN: MEMBRESÍA POR VENCER
+        ATENCIÓN: MEMBRESÍA POR VENCER
       </div>
-      <div class="result-avatar" style="border-color: var(--yellow-primary);">${member.avatar || '💪'}</div>
+      <div class="result-avatar" style="border-color: var(--yellow-primary);">${escapeHTML(avatar)}</div>
       <h2 class="result-name">${escapeHTML(member.name)}</h2>
       <div class="result-code">ID: ${escapeHTML(member.code)}</div>
       
@@ -272,7 +276,7 @@ const App = (() => {
       </div>
 
       <button class="btn btn-yellow btn-sm" onclick="App.openRenewModal('${member.id}')">
-        ⚡ Renovar Ahora en Recepción
+        Renovar en Recepción
       </button>
     `;
   };
@@ -280,11 +284,12 @@ const App = (() => {
   const renderExpiredResult = (member, statusInfo) => {
     const card = document.getElementById('checkinResultCard');
     card.className = 'result-card status-expired';
+    const avatar = member.avatar || DataManager.getInitials(member.name);
     card.innerHTML = `
       <div class="result-badge badge-expired">
-        ⛔ ACCESO DENEGADO - MEMBRESÍA VENCIDA
+        ACCESO DENEGADO - MEMBRESÍA VENCIDA
       </div>
-      <div class="result-avatar" style="border-color: var(--status-expired);">${member.avatar || '💪'}</div>
+      <div class="result-avatar" style="border-color: var(--status-expired);">${escapeHTML(avatar)}</div>
       <h2 class="result-name">${escapeHTML(member.name)}</h2>
       <div class="result-code">ID: ${escapeHTML(member.code)}</div>
       
@@ -304,7 +309,7 @@ const App = (() => {
       </div>
 
       <button class="btn btn-yellow" onclick="App.openRenewModal('${member.id}')">
-        ⚡ Renovar Membresía Ahora
+        Renovar Membresía Ahora
       </button>
     `;
   };
@@ -429,11 +434,12 @@ const App = (() => {
 
     tableBody.innerHTML = members.map(m => {
       const statusInfo = DataManager.getMembershipStatus(m.expirationDate);
+      const avatar = m.avatar || DataManager.getInitials(m.name);
       return `
         <tr>
           <td>
             <div class="member-cell-info">
-              <div class="member-table-avatar">${m.avatar || '💪'}</div>
+              <div class="member-table-avatar">${escapeHTML(avatar)}</div>
               <div>
                 <span class="member-table-name">${escapeHTML(m.name)}</span>
                 <span class="member-table-phone">${escapeHTML(m.phone || 'Sin teléfono')}</span>
@@ -452,23 +458,22 @@ const App = (() => {
           </td>
           <td>
             <span class="badge-status ${statusInfo.status}">
-              ${statusInfo.status === 'active' ? '🟢' : statusInfo.status === 'warning' ? '⚠️' : '⛔'}
               ${statusInfo.label}
             </span>
           </td>
           <td style="text-align: right;">
             <div class="actions-cell" style="justify-content: flex-end;">
               <button class="btn btn-yellow btn-sm" onclick="App.openRenewModal('${m.id}')" title="Renovar Membresía">
-                ⚡ Renovar
+                Renovar
               </button>
-              <button class="btn btn-dark btn-sm btn-icon" onclick="App.openCarnetModal('${m.id}')" title="Ver Carnet / Credencial Digital">
-                🪪
+              <button class="btn btn-dark btn-sm" onclick="App.openCarnetModal('${m.id}')" title="Ver Credencial Digital">
+                Credencial
               </button>
-              <button class="btn btn-dark btn-sm btn-icon" onclick="App.openEditMemberModal('${m.id}')" title="Editar Socio">
-                ✏️
+              <button class="btn btn-dark btn-sm" onclick="App.openEditMemberModal('${m.id}')" title="Editar Socio">
+                Editar
               </button>
-              <button class="btn btn-danger btn-sm btn-icon" onclick="App.deleteMember('${m.id}')" title="Eliminar Socio">
-                🗑️
+              <button class="btn btn-danger btn-sm" onclick="App.deleteMember('${m.id}')" title="Eliminar Socio">
+                Eliminar
               </button>
             </div>
           </td>
@@ -634,7 +639,6 @@ const App = (() => {
     document.getElementById('memberPhone').value = '';
     document.getElementById('memberEmail').value = '';
     document.getElementById('memberPlan').value = 'Mensual';
-    document.getElementById('memberAvatar').value = '💪';
     document.getElementById('memberNotes').value = '';
 
     const todayStr = DataManager.formatDateISO(new Date());
@@ -667,7 +671,6 @@ const App = (() => {
     }
     planSelect.value = memberPlanVal;
 
-    document.getElementById('memberAvatar').value = member.avatar || '💪';
     document.getElementById('memberStartDate').value = member.startDate || DataManager.formatDateISO(new Date());
     document.getElementById('memberExpirationDate').value = member.expirationDate || '';
     document.getElementById('memberNotes').value = member.notes || '';
@@ -682,7 +685,7 @@ const App = (() => {
     const phone = document.getElementById('memberPhone').value.trim();
     const email = document.getElementById('memberEmail').value.trim();
     const plan = document.getElementById('memberPlan').value;
-    const avatar = document.getElementById('memberAvatar').value;
+    const avatar = DataManager.getInitials(name);
     const startDate = document.getElementById('memberStartDate').value;
     const expirationDate = document.getElementById('memberExpirationDate').value;
     const notes = document.getElementById('memberNotes').value.trim();
@@ -739,7 +742,7 @@ const App = (() => {
     const statusInfo = DataManager.getMembershipStatus(member.expirationDate);
 
     document.getElementById('renewMemberId').value = member.id;
-    document.getElementById('renewAvatar').textContent = member.avatar || '💪';
+    document.getElementById('renewAvatar').textContent = member.avatar || DataManager.getInitials(member.name);
     document.getElementById('renewName').textContent = member.name;
     document.getElementById('renewCurrentExp').innerHTML = `
       Vence: <strong>${member.expirationDate}</strong> (${statusInfo.displayText})
@@ -784,7 +787,7 @@ const App = (() => {
 
     const statusInfo = DataManager.getMembershipStatus(member.expirationDate);
 
-    document.getElementById('carnetAvatar').textContent = member.avatar || '💪';
+    document.getElementById('carnetAvatar').textContent = member.avatar || DataManager.getInitials(member.name);
     document.getElementById('carnetName').textContent = member.name;
     document.getElementById('carnetPlan').textContent = `PLAN ${member.plan.toUpperCase()}`;
     document.getElementById('carnetPhone').textContent = member.phone ? `Tel: ${member.phone}` : 'THOR FITNESS CLUB';
