@@ -41,7 +41,7 @@ Tienes dos opciones muy sencillas:
 
 ### 3. Registro y Edición de Nuevos Miembros
 - Nombre completo, teléfono, correo y notas de entrenamiento.
-- **Código único personalizable** o generación con botón de código aleatorio.
+- **Código único personalizable** o generación automática del siguiente código secuencial en orden (`0001`, `0002`, `0003`, etc.).
 - Selección de plan: Pase por Día (1d), Semanal (7d), Mensual (1 mes exacto), Semestral (6 meses), Anual (1 año).
 - **Cálculo automático de fecha de expiración**: Al seleccionar el plan y la fecha de inicio, calcula automáticamente la fecha exacta de vencimiento por calendario.
 
@@ -62,9 +62,11 @@ Tienes dos opciones muy sencillas:
 
 ## Códigos de Prueba Precargados
 
-Para que pruebes la app inmediatamente, incluye socios de prueba:
-- `1001` - **Carlos Mendoza** (Membresía Activa - quedan 15 días)
-- `1002` - **Valeria Gómez** (Membresía Por Vencer - quedan 3 días)
-- `1003` - **Rodrigo Salazar** (Membresía Por Vencer - queda 1 día)
-- `1004` - **Lucía Fernández** (Membresía Vencida - venció hace 5 días)
-- `1005` - **Alejandro Ramos** (Membresía VIP Anual - quedan 305 días)
+Para que pruebes la app inmediatamente, incluye socios de prueba en orden secuencial:
+- `0001` - **Carlos Mendoza** (Membresía Activa - quedan 15 días)
+- `0002` - **Valeria Gómez** (Membresía Por Vencer - quedan 3 días)
+- `0003` - **Rodrigo Salazar** (Membresía Por Vencer - queda 1 día)
+- `0004` - **Lucía Fernández** (Membresía Vencida - venció hace 5 días)
+- `0005` - **Alejandro Ramos** (Membresía VIP Anual - quedan 305 días)
+- `0006` - **Mariana Castro** (Membresía Por Vencer - quedan 5 días)
+- `0007` - **Fernando Morales** (Pase por Día - vencido hace 1 día)

@@ -17,7 +17,7 @@
         
         <div class="brand-info">
           <h1 class="font-sport">THOR GYM</h1>
-          <span>Control de Acceso & Gestión de Socios</span>
+          <span>Control de Acceso & Gestión de Miembros</span>
         </div>
       </div>
 
@@ -100,7 +100,7 @@
                 type="text" 
                 id="inputCode" 
                 class="input-code-large" 
-                placeholder="CÓDIGO (EJ. 1001)" 
+                placeholder="CÓDIGO (EJ. 0001)" 
                 autocomplete="off" 
                 autofocus
               >
@@ -113,9 +113,9 @@
           <!-- Atajos rápidos para probar -->
           <div style="margin-top: 1.25rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <span style="font-size: 0.78rem; color: var(--text-muted); width: 100%;">Códigos de prueba rápida:</span>
-            <button class="btn btn-dark btn-sm" onclick="App.testCode('1001')">1001 (Activo)</button>
-            <button class="btn btn-dark btn-sm" onclick="App.testCode('1002')">1002 (Por Vencer 3d)</button>
-            <button class="btn btn-dark btn-sm" onclick="App.testCode('1004')">1004 (Vencido)</button>
+            <button class="btn btn-dark btn-sm" onclick="App.testCode('0001')">0001 (Activo)</button>
+            <button class="btn btn-dark btn-sm" onclick="App.testCode('0002')">0002 (Por Vencer 3d)</button>
+            <button class="btn btn-dark btn-sm" onclick="App.testCode('0004')">0004 (Vencido)</button>
           </div>
 
           <!-- Teclado en pantalla (kiosco táctil) -->
@@ -253,8 +253,8 @@
             <div class="form-group">
               <label for="memberCode">Código de Identificación *</label>
               <div style="display: flex; gap: 0.4rem;">
-                <input type="text" id="memberCode" required placeholder="Ej. 1045" style="text-transform: uppercase;">
-                <button type="button" id="btnGenCode" class="btn btn-dark btn-sm" title="Generar código aleatorio">Aleatorio</button>
+                <input type="text" id="memberCode" required placeholder="Ej. 0008" style="text-transform: uppercase;">
+                <button type="button" id="btnGenCode" class="btn btn-dark btn-sm" title="Generar siguiente código secuencial">Siguiente</button>
               </div>
             </div>
           </div>
@@ -373,13 +373,13 @@
             <div class="carnet-code-display">
               <div class="barcode-sim" id="carnetBarcode">||| | || |||| | |</div>
               <div id="carnetCodeText" style="font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: var(--yellow-primary); margin-top: 2px;">
-                GYM-1001
+                GYM-0001
               </div>
             </div>
 
             <div class="carnet-footer">
               <span>Válido hasta: <strong id="carnetExpDate" style="color: #fff;">--</strong></span>
-              <span>ID: <strong id="carnetIdShort" style="color: var(--yellow-primary);">#1001</strong></span>
+              <span>ID: <strong id="carnetIdShort" style="color: var(--yellow-primary);">#0001</strong></span>
             </div>
           </div>
         </div>

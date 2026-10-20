@@ -131,7 +131,7 @@ const DataManager = (() => {
     return [
       {
         id: 'mem-1',
-        code: '1001',
+        code: '0001',
         name: 'Carlos Mendoza',
         phone: '55 1234 5678',
         email: 'carlos.mendoza@email.com',
@@ -143,7 +143,7 @@ const DataManager = (() => {
       },
       {
         id: 'mem-2',
-        code: '1002',
+        code: '0002',
         name: 'Valeria Gómez',
         phone: '55 8765 4321',
         email: 'valeria.g@email.com',
@@ -155,7 +155,7 @@ const DataManager = (() => {
       },
       {
         id: 'mem-3',
-        code: '1003',
+        code: '0003',
         name: 'Rodrigo Salazar',
         phone: '55 4321 8765',
         email: 'rodrigo.s@email.com',
@@ -167,7 +167,7 @@ const DataManager = (() => {
       },
       {
         id: 'mem-4',
-        code: '1004',
+        code: '0004',
         name: 'Lucía Fernández',
         phone: '55 9988 7766',
         email: 'lucia.f@email.com',
@@ -179,7 +179,7 @@ const DataManager = (() => {
       },
       {
         id: 'mem-5',
-        code: '1005',
+        code: '0005',
         name: 'Alejandro Ramos',
         phone: '55 6677 8899',
         email: 'alejandro.r@email.com',
@@ -191,7 +191,7 @@ const DataManager = (() => {
       },
       {
         id: 'mem-6',
-        code: '1006',
+        code: '0006',
         name: 'Mariana Castro',
         phone: '55 3344 5566',
         email: 'mariana.c@email.com',
@@ -203,7 +203,7 @@ const DataManager = (() => {
       },
       {
         id: 'mem-7',
-        code: '1007',
+        code: '0007',
         name: 'Fernando Morales',
         phone: '55 5544 3322',
         email: 'fernando.m@email.com',
@@ -223,13 +223,22 @@ const DataManager = (() => {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          // Reemplazar avatares con emojis residuales por iniciales limpias
-          return parsed.map(m => ({
-            ...m,
-            avatar: (!m.avatar || /[\uD83C-\uDBFF\uDC00-\uDFFF\u2600-\u27BF]/.test(m.avatar))
-              ? getInitials(m.name)
-              : m.avatar
-          }));
+          // Migrar códigos antiguos (1001-1007 a 0001-0007) y limpiar avatares
+          return parsed.map(m => {
+            let code = (m.code || '').toString().trim();
+            if (/^100[1-7]$/.test(code)) {
+              code = '000' + code.slice(-1);
+            } else if (/^\d+$/.test(code) && code.length < 4) {
+              code = code.padStart(4, '0');
+            }
+            return {
+              ...m,
+              code: code,
+              avatar: (!m.avatar || /[\uD83C-\uDBFF\uDC00-\uDFFF\u2600-\u27BF]/.test(m.avatar))
+                ? getInitials(m.name)
+                : m.avatar
+            };
+          });
         }
       }
     } catch (e) {
@@ -248,6 +257,25 @@ const DataManager = (() => {
     }
   };
 
+  // Generador del siguiente código secuencial en orden (0001, 0002, 0003, etc.)
+  const getNextSequentialCode = () => {
+    const members = loadMembers();
+    if (!members || members.length === 0) {
+      return '0001';
+    }
+
+    const numericCodes = members
+      .map(m => parseInt(m.code, 10))
+      .filter(n => !isNaN(n) && n > 0);
+
+    if (numericCodes.length === 0) {
+      return '0001';
+    }
+
+    const maxCode = Math.max(...numericCodes);
+    return String(maxCode + 1).padStart(4, '0');
+  };
+
   return {
     formatDateISO,
     addDaysToDate,
@@ -257,24 +285,40 @@ const DataManager = (() => {
     calculateDaysRemaining,
     getMembershipStatus,
     getInitials,
+    getNextSequentialCode,
 
     // Obtener todos los miembros
     getMembers: () => {
       return loadMembers();
     },
 
-    // Buscar miembro por código exacto (insensible a mayúsculas/espacios)
+    // Buscar miembro por código (exacto o equivalente numérico, ej: 1 encuentra 0001)
     getMemberByCode: (code) => {
       if (!code) return null;
       const cleanCode = code.toString().trim().toUpperCase();
       const members = loadMembers();
-      return members.find(m => m.code.toString().trim().toUpperCase() === cleanCode) || null;
+      return members.find(m => {
+        const mCode = m.code ? m.code.toString().trim().toUpperCase() : '';
+        if (mCode === cleanCode) return true;
+        // Permitir buscar '1' y encontrar '0001'
+        if (/^\d+$/.test(cleanCode) && /^\d+$/.test(mCode)) {
+          return parseInt(cleanCode, 10) === parseInt(mCode, 10);
+        }
+        return false;
+      }) || null;
     },
 
     // Guardar o actualizar miembro
     saveMember: (memberData) => {
       const members = loadMembers();
       const index = members.findIndex(m => m.id === memberData.id);
+
+      // Asegurar formato de 4 dígitos si el código es numérico (ej. 8 -> 0008)
+      let cleanCode = (memberData.code || '').toString().trim().toUpperCase();
+      if (/^\d+$/.test(cleanCode) && cleanCode.length < 4) {
+        cleanCode = cleanCode.padStart(4, '0');
+      }
+      memberData.code = cleanCode;
 
       if (index !== -1) {
         // Actualización

@@ -545,11 +545,11 @@ const App = (() => {
       });
     });
 
-    // Generar código aleatorio en formulario
+    // Generar siguiente código secuencial en formulario
     const btnGenCode = document.getElementById('btnGenCode');
     if (btnGenCode) {
       btnGenCode.addEventListener('click', () => {
-        document.getElementById('memberCode').value = generateUniqueCode();
+        document.getElementById('memberCode').value = generateNextSequentialCode();
       });
     }
 
@@ -606,15 +606,8 @@ const App = (() => {
     if (modal) modal.classList.remove('open');
   };
 
-  const generateUniqueCode = () => {
-    const members = DataManager.getMembers();
-    let code = '';
-    let exists = true;
-    while (exists) {
-      code = (Math.floor(1000 + Math.random() * 9000)).toString();
-      exists = members.some(m => m.code === code);
-    }
-    return code;
+  const generateNextSequentialCode = () => {
+    return DataManager.getNextSequentialCode();
   };
 
   const updateExpirationDateByPlan = () => {
@@ -635,7 +628,7 @@ const App = (() => {
     document.getElementById('modalMemberTitle').textContent = 'Registrar Nuevo Socio';
     document.getElementById('memberId').value = '';
     document.getElementById('memberName').value = '';
-    document.getElementById('memberCode').value = prefilledCode || generateUniqueCode();
+    document.getElementById('memberCode').value = prefilledCode || generateNextSequentialCode();
     document.getElementById('memberPhone').value = '';
     document.getElementById('memberEmail').value = '';
     document.getElementById('memberPlan').value = 'Mensual';
@@ -681,7 +674,10 @@ const App = (() => {
   const saveMemberForm = () => {
     const id = document.getElementById('memberId').value;
     const name = document.getElementById('memberName').value.trim();
-    const code = document.getElementById('memberCode').value.trim().toUpperCase();
+    let code = document.getElementById('memberCode').value.trim().toUpperCase();
+    if (/^\d+$/.test(code) && code.length < 4) {
+      code = code.padStart(4, '0');
+    }
     const phone = document.getElementById('memberPhone').value.trim();
     const email = document.getElementById('memberEmail').value.trim();
     const plan = document.getElementById('memberPlan').value;
@@ -697,9 +693,17 @@ const App = (() => {
 
     // Verificar si el código ya lo tiene OTRO socio
     const members = DataManager.getMembers();
-    const duplicate = members.find(m => m.code === code && m.id !== id);
+    const duplicate = members.find(m => {
+      if (m.id === id) return false;
+      const mCode = (m.code || '').toString().trim().toUpperCase();
+      if (mCode === code) return true;
+      if (/^\d+$/.test(code) && /^\d+$/.test(mCode)) {
+        return parseInt(code, 10) === parseInt(mCode, 10);
+      }
+      return false;
+    });
     if (duplicate) {
-      alert(`El código "${code}" ya está asignado al socio ${duplicate.name}. Por favor usa otro código único.`);
+      alert(`El código "${code}" ya está asignado al socio ${duplicate.name}. Por favor usa otro código.`);
       return;
     }
 
