@@ -591,7 +591,16 @@ const App = (() => {
           refreshStats();
           renderMembersTable();
           closeModal('modalRenew');
+          SoundManager.playSuccess();
         }
+      });
+    }
+
+    // Si se elige una fecha manual, se quita la selección de las opciones rápidas
+    const renewCustomDate = document.getElementById('renewCustomDate');
+    if (renewCustomDate) {
+      renewCustomDate.addEventListener('input', () => {
+        document.querySelectorAll('#modalRenew .renew-option').forEach(btn => btn.classList.remove('selected'));
       });
     }
   };
@@ -755,23 +764,29 @@ const App = (() => {
     // Fecha sugerida por defecto: +1 mes calendario exacto
     const todayStr = DataManager.formatDateISO(new Date());
     const baseDate = statusInfo.status === 'expired' ? todayStr : member.expirationDate;
-    document.getElementById('renewCustomDate').value = DataManager.addMonthsToDate(baseDate, 1);
+    renewBaseDate = baseDate;
+    applyRenewUnit('month', 1);
 
     openModal('modalRenew');
   };
 
+  // Fecha desde la que se calculan las opciones rápidas del modal de renovación
+  let renewBaseDate = '';
+
+  // Solo selecciona la opción y calcula la nueva fecha; se guarda al confirmar
   const applyRenewUnit = (unit, amount) => {
-    const memberId = document.getElementById('renewMemberId').value;
-    if (!memberId) return;
+    if (!renewBaseDate) return;
 
-    // Si la membresía ya expiró, renueva a partir de hoy. Si no, extiende la fecha actual.
-    DataManager.renewMember(memberId, amount, unit, false);
-    refreshStats();
-    renderMembersTable();
-    closeModal('modalRenew');
+    let newDate;
+    if (unit === 'month') newDate = DataManager.addMonthsToDate(renewBaseDate, amount);
+    else if (unit === 'year') newDate = DataManager.addYearsToDate(renewBaseDate, amount);
+    else if (unit === 'week') newDate = DataManager.addDaysToDate(renewBaseDate, amount * 7);
+    else newDate = DataManager.addDaysToDate(renewBaseDate, amount);
 
-    // Notificación sonora suave
-    SoundManager.playSuccess();
+    document.getElementById('renewCustomDate').value = newDate;
+    document.querySelectorAll('#modalRenew .renew-option').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.unit === unit && Number(btn.dataset.amount) === amount);
+    });
   };
 
   const applyRenewDays = (days) => {

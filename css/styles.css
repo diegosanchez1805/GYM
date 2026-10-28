@@ -390,6 +390,13 @@ button, input, select, textarea {
   color: #FFFFFF;
 }
 
+.btn.renew-option.selected {
+  background: var(--yellow-bg-subtle);
+  border-color: var(--yellow-primary);
+  color: var(--yellow-primary);
+  box-shadow: 0 0 0 1px var(--yellow-primary);
+}
+
 select.btn option {
   background: var(--bg-card);
   color: var(--text-main);

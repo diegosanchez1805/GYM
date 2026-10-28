@@ -318,21 +318,21 @@
         <div class="form-group">
           <label>Extender tiempo de membresía:</label>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1rem;">
-            <button type="button" class="btn btn-dark" onclick="App.applyRenewUnit('week', 1)">+ 1 Semana (7d)</button>
-            <button type="button" class="btn btn-dark" onclick="App.applyRenewUnit('month', 1)">+ 1 Mes Exacto</button>
-            <button type="button" class="btn btn-dark" onclick="App.applyRenewUnit('month', 6)">+ 6 Meses</button>
-            <button type="button" class="btn btn-yellow" onclick="App.applyRenewUnit('year', 1)">+ 1 Año Exacto</button>
+            <button type="button" class="btn btn-dark renew-option" data-unit="week" data-amount="1" onclick="App.applyRenewUnit('week', 1)">+ 1 Semana (7d)</button>
+            <button type="button" class="btn btn-dark renew-option" data-unit="month" data-amount="1" onclick="App.applyRenewUnit('month', 1)">+ 1 Mes Exacto</button>
+            <button type="button" class="btn btn-dark renew-option" data-unit="month" data-amount="6" onclick="App.applyRenewUnit('month', 6)">+ 6 Meses</button>
+            <button type="button" class="btn btn-dark renew-option" data-unit="year" data-amount="1" onclick="App.applyRenewUnit('year', 1)">+ 1 Año Exacto</button>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="renewCustomDate">O elegir nueva fecha exacta de vencimiento:</label>
+          <label for="renewCustomDate">Nueva fecha de vencimiento (puedes ajustarla):</label>
           <input type="date" id="renewCustomDate">
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark" data-close="modalRenew">Cerrar</button>
-        <button type="button" id="btnConfirmRenewCustom" class="btn btn-yellow">Aplicar Fecha</button>
+        <button type="button" id="btnConfirmRenewCustom" class="btn btn-yellow">Confirmar Renovación</button>
       </div>
     </div>
   </div>
