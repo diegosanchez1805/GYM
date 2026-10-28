@@ -271,7 +271,7 @@ const App = (() => {
         </div>
       </div>
 
-      <div class="result-message" style="background: var(--status-warning-bg); color: var(--yellow-primary); border: 1px solid rgba(255, 230, 0, 0.4); margin-bottom: 1rem;">
+      <div class="result-message" style="background: var(--status-warning-bg); color: var(--yellow-primary); border: 1px solid var(--yellow-border); margin-bottom: 1rem;">
         ¡Pasa a recepción! Tu membresía está próxima a vencer (${statusInfo.displayText})
       </div>
 
